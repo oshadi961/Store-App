@@ -1,0 +1,86 @@
+version: "3"
+services:
+    mongo:
+        image: 'mongo:latest'
+        restart: always
+        container_name: mongo
+        ports:
+            - '27017:27017'
+        volumes:
+            - './mongo/data:/data/db'  
+        networks:
+            - app-network
+    storeapp-backend:
+        # container_name: backend
+        restart: always
+        build:
+            context: ./store-backend
+            dockerfile: Dockerfile
+        ports:
+            - '5000:5000'
+        depends_on:
+            - mongo
+        networks:
+            - app-network
+    storeapp-frontend:   
+        # container_name: frontend
+        restart: always
+        build:
+            context: ./store-frontend
+            dockerfile: Dockerfile
+        ports:
+            - '3000:3000'  
+        networks:
+            - app-network                    
+networks:
+        app-network:
+            driver: bridge
+
+
+# version: "3"
+# services:
+#     mongo:
+#         image: 'mongo:3.6.19-xenial'
+#         #restart: always
+#         container_name: mongo
+#         ports:
+#             - '27017:27017'
+
+#         networks:
+#             - store-keeper
+            
+#         volumes:
+#             - './mongo/data:/data/db'  
+#     storeapp-backend:
+#         # container_name: backend
+#         #restart: always
+#         image: storeapp-backend
+#         build:
+#             context: ./store-backend
+#             dockerfile: Dockerfile
+#         ports:
+#             - '5000:5000'
+#         depends_on:
+#             - mongo
+
+#         networks:
+#             - store-keeper
+
+#     storeapp-frontend:   
+#          # container_name: frontend
+#         #restart: always
+#         image: storeapp-frontend
+#         # stdin_open: ture
+#         build:
+#             context: ./store-frontend
+#             dockerfile: Dockerfile
+#         ports:
+#             - '9000:9000'
+            
+#         networks:
+#             - store-keeper
+
+# networks:
+#     store-keeper:
+#         driver: bridge
+
