@@ -3,37 +3,37 @@ services:
     mongo:
         image: 'mongo:latest'
         restart: always
-        container_name: mongo-IT18120226
+        container_name: mongodb
         ports:
             - '27017:27017'
         volumes:
-            - './mongo-IT18120226/data:/data/db'  
+            - './mongo/data:/data/db'  
         networks:
-            - storeapp-IT18120226
-    storeapp-backend-:
+            - storeapp
+    storeapp-backend:
         # container_name: backend
         restart: always
         build:
-            context: ./store-backend-IT18120226
+            context: ./store-backend
             dockerfile: Dockerfile
         ports:
             - '5000:5000'
         depends_on:
             - mongo
         networks:
-            - storeapp-IT18120226
+            - storeapp
     storeapp-frontend:   
         # container_name: frontend
         restart: always
         build:
-            context: ./store-frontend-IT18120226
+            context: ./store-frontend
             dockerfile: Dockerfile
         ports:
             - '3000:3000'  
         networks:
-            - storeapp-IT18120226                    
+            - storeapp                    
 networks:
-        storeapp-IT18120226:
+        storeapp:
             driver: bridge
 
 
